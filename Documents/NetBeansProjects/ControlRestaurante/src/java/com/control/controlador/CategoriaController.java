@@ -2,6 +2,7 @@ package com.control.controlador;
 
 
 import com.control.dao.CategoriaFacade;
+import com.control.dao.TProductoCategoriaFacade;
 import com.control.dto.PedidoDetalleDto;
 import com.control.dto.PedidoMaestro;
 import com.control.entidad.Categoria;
@@ -13,25 +14,42 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.primefaces.push.EventBus;
+import org.primefaces.push.EventBusFactory;
 
 @ManagedBean(name = "categoriaController")
-@SessionScoped
+@RequestScoped
 public class CategoriaController implements Serializable {
 
     @EJB
     private com.control.dao.CategoriaFacade ejbFacade;
+    @EJB
+    private TProductoCategoriaFacade ejbProductoFacadel;
     private List<Categoria> items = null;
     private Categoria selected;
     private List<TProductoCategoria>listaProductos;
     private PedidoMaestro pedidoMaestro;
     private TProductoCategoria pedido;
     private PedidoDetalleDto detalle;
+    private List<PedidoMaestro>listaPedidos;
+
+    public List<PedidoMaestro> getListaPedidos() {
+        return listaPedidos;
+    }
+
+    public void setListaPedidos(List<PedidoMaestro> listaPedidos) {
+        this.listaPedidos = listaPedidos;
+    }
 
     public PedidoDetalleDto getDetalle() {
         return detalle;
@@ -102,13 +120,14 @@ public class CategoriaController implements Serializable {
    }
    
    public void agregarPedido(){
+       pedido=ejbProductoFacadel.find(this.pedido.getSerial());
        detalle.setProducto(pedido);
        pedidoMaestro.getDetallesPedido().add(detalle);
-       System.out.println(pedidoMaestro.getDetallesPedido().size());
        detalle=new PedidoDetalleDto();
    }
    @PostConstruct
    public void iniciar(){
+       this.listaPedidos=new ArrayList<PedidoMaestro>();
        this.items=null;
        this.listaProductos=new ArrayList<TProductoCategoria>();
        this.selected=new Categoria();
@@ -124,8 +143,21 @@ public class CategoriaController implements Serializable {
         }
         return items;
     }
-
     
+    public void agregarPedidoMaestro(){
+        this.listaPedidos.add(pedidoMaestro);
+        notificarPUSH();
+    }
+
+     public void notificarPUSH() {
+
+        String summary = "Nuevo Elemento";
+        String detail = "Se agrego a la lista";
+        String CHANNEL = "/notity";
+
+        EventBus eventBus = EventBusFactory.getDefault().eventBus();
+        eventBus.publish(CHANNEL, new FacesMessage(StringEscapeUtils.escapeHtml3(summary), StringEscapeUtils.escapeHtml3(detail)));
+    }
     public List<Categoria> getItemsAvailableSelectMany() {
         return getFacade().findAll();
     }

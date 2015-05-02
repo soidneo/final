@@ -11,5 +11,6 @@ public class NotifyResource {
     @OnMessage(encoders = {JSONEncoder.class})
     public FacesMessage onMessage(FacesMessage message) {
         return message;
+        //
     }
 }

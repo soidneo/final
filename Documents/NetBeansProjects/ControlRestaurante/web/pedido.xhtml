@@ -36,7 +36,7 @@ and open the template in the editor.
                         </pm:field> 
                         
                         <pm:field>
-                            <p:outputLabel for="selectOneMenu2" value="Categoria" />              
+                            <p:outputLabel for="selectOneMenu2" value="Producto" />              
                             <p:selectOneMenu id="selectOneMenu2" value="#{categoriaController.pedido.serial}">
                 
                                 <f:selectItem itemLabel="Seleccione" itemValue="" />
@@ -72,10 +72,17 @@ and open the template in the editor.
                                 <p:column headerText="Producto" >
                                     <h:outputText value="#{detalle.producto.idProducto.nombre}" />
                                 </p:column>
+                                <p:column headerText="Mesa" >
+                                    <h:outputText value="#{categoriaController.pedidoMaestro.mesa}" />
+                                </p:column>
+                                <p:column headerText="Mesa" >
+                                    <h:outputText value="#{categoriaController.pedidoMaestro.mesa}" />
+                                </p:column>
                                 
                             </p:dataTable>
                         </pm:field>
-                        
+                        <p:commandButton value="Confirmar Pedido"
+                                         actionListener="#{categoriaController.agregarPedidoMaestro()}"/>
                         
                     </pm:field> 
                 </h:form>
