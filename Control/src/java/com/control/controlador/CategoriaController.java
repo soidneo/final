@@ -15,9 +15,9 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
@@ -27,7 +27,7 @@ import org.primefaces.push.EventBusFactory;
  * @author mateo
  */
 @ManagedBean(name = "categoriaController")
-@ViewScoped
+@ApplicationScoped
 public class CategoriaController {
 
     @EJB

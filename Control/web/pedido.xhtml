@@ -57,13 +57,15 @@
                         </pm:field>
                         
                        <pm:field>
-                           <p:commandButton ajax="true" update="form" 
-                                            value="agregar"  actionListener="#{categoriaController.agregarPedido}"/>
+                           <p:commandButton ajax="true" update="tabla" 
+                                            value="agregar"  actionListener="#{categoriaController.agregarPedido}">
+                            
+                           </p:commandButton>
                        </pm:field>
                         
                         <pm:field>
                             <p:dataTable value="#{categoriaController.pedidoMaestro.detallesPedido}"
-                                         var="detalle" tableStyleClass="ui-table-columntoggle">
+                                         var="detalle" tableStyleClass="ui-table-columntoggle" id="tabla">
                                 
                                 <p:column headerText="Producto" >
                                     <h:outputText value="#{detalle.producto.idProducto.nombre}" />
