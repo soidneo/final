@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
 
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class PersonaBean {
 
     private Persona persona = new Persona();
